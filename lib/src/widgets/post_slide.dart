@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/Post.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 class PostSlide extends StatelessWidget {
   Post post;
@@ -20,7 +19,9 @@ class PostSlide extends StatelessWidget {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: new CachedNetworkImageProvider(
-                    post.postFeaturedMedia.thumbnail,
+                    post.postFeaturedMedia != null
+                        ? post.postFeaturedMedia.thumbnail
+                        : "https://www.dw.uffey.com/wp-content/uploads/2019/07/dw-circleAsset-1Uffey-2.png",
                   ),
                   fit: BoxFit.fitWidth,
                   alignment: Alignment.topCenter)),

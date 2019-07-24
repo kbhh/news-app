@@ -1,4 +1,4 @@
-#Fri Jul 12 09:50:32 EAT 2019
-base.0=/Users/kbd/dw_app/build/app/intermediates/transforms/dexMerger/debug/0
+#Wed Jul 24 11:00:30 EAT 2019
+base.0=/Users/kbd/dw_app/news-app/build/app/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

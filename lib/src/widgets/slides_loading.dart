@@ -10,7 +10,7 @@ class SlidesLoading extends StatelessWidget {
         semanticContainer: true,
         child: Container(
           height: 200,
-          width: 350,
+          width: 400,
           decoration: BoxDecoration(),
           child: Padding(
             padding: EdgeInsets.all(15),
@@ -20,8 +20,8 @@ class SlidesLoading extends StatelessWidget {
               children: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(bottom: 10, top: 10),
-                    child: buildContainer()), 
-               buildContainer(),
+                    child: buildContainer()),
+                buildContainer(),
               ],
             ),
           ),
@@ -33,7 +33,6 @@ class SlidesLoading extends StatelessWidget {
   Widget buildContainer() {
     return Container(
       color: Colors.grey[200],
-
     );
   }
 }

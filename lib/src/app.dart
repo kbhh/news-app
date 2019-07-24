@@ -1,24 +1,82 @@
+import 'package:DW/src/models/Video.dart';
+import 'package:DW/src/pages/videos/play_video.dart';
 import 'package:flutter/material.dart';
-import 'package:dw_app/src/localization/localizations.dart';
+import 'package:DW/src/localization/localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_cupertino_localizations/flutter_cupertino_localizations.dart';
 
-import 'package:dw_app/src/pages/post_detail.dart';
-import 'package:dw_app/src/models/Post.dart';
-import 'package:dw_app/src/pages/home_posts.dart';
-import 'package:dw_app/src/pages/sport_posts.dart';
+import 'package:DW/src/pages/post_detail.dart';
+import 'package:DW/src/models/Post.dart';
+import 'package:DW/src/home.dart';
 
-class Home extends StatelessWidget {
+class HomeInherited extends InheritedWidget {
+  HomeInherited({Key key, @required Widget child, @required this.data})
+      : super(key: key, child: child);
+
+  final HomeState data;
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) {
+    return true;
+  }
+}
+
+class Home extends StatefulWidget {
+  @override
+  HomeState createState() {
+    return HomeState();
+  }
+
+  static HomeState of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(HomeInherited)
+            as HomeInherited)
+        .data;
+  }
+}
+
+class HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
+  String _locale = 'en';
+  int _number_tabs = 5;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  changeNumberOfTabs(int tabs) {
+    setState(() {
+      _number_tabs = tabs;
+    });
+  }
+
+  void onChangeLanguage(String lang) {
+    setState(() {
+      _locale = lang;
+    });
+  }
+
+  String get lang => _locale;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return new MaterialApp(
-      supportedLocales: [const Locale('tr', 'TR'), const Locale('en', 'US')],
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: const Color(0xff8f0924),
+        accentColor: const Color(0xff8f0924),
+      ),
+      locale: Locale(_locale),
+      supportedLocales: [const Locale('fr', 'FR'), const Locale('en', 'US')],
       localizationsDelegates: [
-        const DemoLocalizationsDelegate(),
+        const AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       localeResolutionCallback:
           (Locale locale, Iterable<Locale> supportedLocales) {
+        if (locale == null) {
+          return supportedLocales.first;
+        }
         for (Locale supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale.languageCode ||
               supportedLocale.countryCode == locale.countryCode) {
@@ -28,77 +86,39 @@ class Home extends StatelessWidget {
 
         return supportedLocales.first;
       },
-      title: 'Flutter Internationalization',
       onGenerateRoute: routes,
       home: DefaultTabController(
-        length: 4,
-        child: new HomePage(),
+        length: _number_tabs,
+        child: new HomeInherited(
+          data: this,
+          child: new HomePage(
+            onChangeLanguage,
+          ),
+        ),
       ),
     );
   }
 
   Route routes(RouteSettings settings) {
-    Post post;
-
-    if (settings.arguments != null) {
-      post = settings.arguments;
-    }
-
     if (settings.name == "/postDetail") {
+      Post post;
+
+      if (settings.arguments != null) {
+        post = settings.arguments;
+      }
       return MaterialPageRoute(
         builder: (context) {
-          return PostDetail(post);
+          return PostDetail(post, _locale);
         },
       );
-    } else {
+    } else if (settings.name == "/play") {
+      Video source;
+      if (settings.arguments != null) {
+        source = settings.arguments;
+      }
       return MaterialPageRoute(builder: (context) {
-        // return
+        return PlayVideo(source);
       });
     }
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text(DemoLocalizations.of(context).trans("news")),
-        bottom: TabBar(
-          tabs: <Widget>[
-            Tab(text: "Home"),
-            Tab(text: "Home"),
-            Tab(text: "Home"),
-            Tab(text: "Home"),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.ac_unit),
-            title: new Text("news"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.ac_unit),
-            title: Text("DApp"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.ac_unit),
-            title: Text("Radio"),
-          ),
-        ],
-        currentIndex: 1,
-      ),
-      body: TabBarView(
-        children: <Widget>[
-          HomePosts(),
-          SportPosts(),
-          // Text("hello"),
-          Text("hello"),
-          Text("hello"),
-        ],
-      ),
-    );
   }
 }

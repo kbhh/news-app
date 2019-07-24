@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DemoLocalizations {
-  DemoLocalizations(this.locale);
+class AppLocalizations {
+  AppLocalizations(this.locale);
 
   final Locale locale;
 
-  static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   Map<String, String> _sentences;
@@ -33,16 +33,15 @@ class DemoLocalizations {
   }
 }
 
-class DemoLocalizationsDelegate
-    extends LocalizationsDelegate<DemoLocalizations> {
-  const DemoLocalizationsDelegate();
+class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+  const AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) => ['fr', 'en'].contains(locale.languageCode);
 
   @override
-  Future<DemoLocalizations> load(Locale locale) async {
-    DemoLocalizations localizations = new DemoLocalizations(locale);
+  Future<AppLocalizations> load(Locale locale) async {
+    AppLocalizations localizations = new AppLocalizations(locale);
     await localizations.load();
 
     print("Load ${locale.languageCode}");
@@ -51,5 +50,5 @@ class DemoLocalizationsDelegate
   }
 
   @override
-  bool shouldReload(DemoLocalizationsDelegate old) => false;
+  bool shouldReload(AppLocalizationsDelegate old) => false;
 }

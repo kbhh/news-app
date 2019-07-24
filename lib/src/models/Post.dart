@@ -31,7 +31,8 @@ class Post {
       postModified: parsedJson['modified'],
       postStatus: parsedJson['status'],
       postContent: parsedJson['content']['rendered'],
-      postFeaturedMedia: parsedJson['featured_media'] > 0
+      postFeaturedMedia: (parsedJson['featured_media']) > 0 &&
+              (parsedJson['featured_media'] != null)
           ? ImageModel.fromJson(parsedJson['_embedded']['wp:featuredmedia'][0])
           : null,
       postCatagories:
@@ -59,9 +60,9 @@ class Post {
       "content": postContent,
       "excrept": postExcerpt,
       "date": postDate,
-      "catagories": postCatagories,
+      // "catagories": jsonDecode(postCatagories.cats),
       "status": postStatus,
-      "featured_media": postFeaturedMedia
+      "featured_media": postFeaturedMedia.thumbnail
     };
   }
 }

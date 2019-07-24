@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:DW/src/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../models/Post.dart';
 
 class PostDetail extends StatelessWidget {
-  Post post;
-  PostDetail(this.post);
+  final Post post;
+  final String lang;
+  PostDetail(this.post, this.lang);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class PostDetail extends StatelessWidget {
     );
 
     final postDate = Container(
-      padding: const EdgeInsets.all(7.0),
+      padding: const EdgeInsets.all(5.0),
       decoration: new BoxDecoration(
           border: new Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(5.0)),
@@ -31,7 +33,7 @@ class PostDetail extends StatelessWidget {
     final topContentText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 80.0),
+        SizedBox(height: 40.0),
         Text(
           post.postCatagories.cats[0].toString(),
           style: TextStyle(color: Colors.white, fontSize: 19.0),
@@ -40,18 +42,21 @@ class PostDetail extends StatelessWidget {
           width: 90.0,
           child: new Divider(color: Colors.green),
         ),
-        SizedBox(height: 10.0),
+        SizedBox(height: 5.0),
         Text(
           post.postTitle,
-          style: TextStyle(color: Colors.white, fontSize: 28.0),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22.0,
+          ),
         ),
-        SizedBox(height: 30.0),
+        SizedBox(height: 15.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(flex: 2, child: levelIndicator),
             Expanded(
-                flex: 5,
+                flex: 3,
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
@@ -68,7 +73,7 @@ class PostDetail extends StatelessWidget {
     );
 
     final topContent = SliverAppBar(
-      expandedHeight: 350.0,
+      expandedHeight: MediaQuery.of(context).size.height * 0.35,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         collapseMode: CollapseMode.parallax,
@@ -76,18 +81,20 @@ class PostDetail extends StatelessWidget {
           children: <Widget>[
             Container(
                 padding: EdgeInsets.only(left: 10.0),
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 1.0,
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
                     image: new CachedNetworkImageProvider(
-                      post.postFeaturedMedia.thumbnail,
+                      post.postFeaturedMedia != null
+                          ? post.postFeaturedMedia.thumbnail
+                          : "https://www.dw.uffey.com/wp-content/uploads/2019/07/dw-circleAsset-1Uffey-2.png",
                     ),
                     fit: BoxFit.fill,
                   ),
                 )),
             Container(
-              height: MediaQuery.of(context).size.height * 0.5,
-              padding: EdgeInsets.fromLTRB(30.0, 5.0, 20.0, 0.0),
+              height: MediaQuery.of(context).size.height * 1.0,
+              padding: EdgeInsets.fromLTRB(43.0, 0.0, 7.0, 0.0),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
               child: Center(
@@ -149,13 +156,30 @@ class PostDetail extends StatelessWidget {
     var post_date;
 
     if (hours_from_now > 24) {
-      post_date = parsed_date.difference(DateTime.now()).inDays.isNegative
-          ? ((parsed_date.difference(DateTime.now()).inDays * -1).toString() +
-              " Days ago")
-          : parsed_date.difference(DateTime.now()).inDays.toString() +
-              "Days ago";
+      if (lang == 'en') {
+        post_date = parsed_date.difference(DateTime.now()).inDays.isNegative
+            ? ("ቅድሚ " +
+                (parsed_date.difference(DateTime.now()).inDays * -1)
+                    .toString() +
+                " መዓልቲ")
+            : parsed_date.difference(DateTime.now()).inDays.toString() +
+                " መዓልቲ";
+      } else {
+        post_date = parsed_date.difference(DateTime.now()).inDays.isNegative
+            ? ("ከ " +
+                (parsed_date.difference(DateTime.now()).inDays * -1)
+                    .toString() +
+                " ቀን በፊት")
+            : "ከ " +
+                parsed_date.difference(DateTime.now()).inDays.toString() +
+                " ቀን በፊት";
+      }
     } else {
-      post_date = hours_from_now.toString() + " hours ago";
+      if (lang == 'fr') {
+        post_date = "ቅድሚ " + hours_from_now.toString() + "ሰዓት";
+      } else {
+        post_date = "ከ " + hours_from_now.toString() + "ሰዓት በፊት";
+      }
     }
 
     return post_date;

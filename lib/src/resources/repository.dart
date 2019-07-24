@@ -7,8 +7,8 @@ class Repository {
   NewsApiProvider apiProvider = NewsApiProvider();
   //NewsDbProvider db = NewsDbProvider().init();
 
-  Future<List> fetchPosts(catagory) {
-    return apiProvider.fetchPostOf(catagory);
+  Future<List> fetchPosts(catagory, pages) {
+    return apiProvider.fetchPostOf(catagory, pages);
   }
 
   fetchPost(id) async {

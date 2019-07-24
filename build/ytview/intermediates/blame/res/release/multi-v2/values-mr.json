@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/kbd/dw_app/news-app/build/ytview/intermediates/res/merged/release/values-mr/values-mr.xml",
+            "map": [
+                {
+                    "source": "/Users/kbd/.gradle/caches/transforms-2/files-2.1/ca93447eb88f28ded52a6756a4c00573/res/values-mr/values-mr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/kbd/dw_app/news-app/build/ytview/intermediates/incremental/mergeReleaseResources/merged.dir/values-mr/values-mr.xml",
+            "map": [
+                {
+                    "source": "/Users/kbd/.gradle/caches/transforms-2/files-2.1/ca93447eb88f28ded52a6756a4c00573/res/values-mr/values-mr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

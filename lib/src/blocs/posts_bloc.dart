@@ -1,7 +1,6 @@
-import 'package:dw_app/src/resources/repository.dart';
+import 'package:DW/src/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
-import '../models/Post.dart';
-import '../resources/news_api_provider.dart';
+import 'package:DW/src/models/Post.dart';
 
 class PostsBloc {
   final _repository = Repository();
@@ -9,9 +8,13 @@ class PostsBloc {
 
   Observable<List<Post>> get posts => _posts.stream;
 
-  fetchPosts(catagory) async {
-    final posts = await _repository.fetchPosts(catagory);
-    _posts.sink.add(posts);
+  fetchPosts(catagory, pages) async {
+    try {
+      final posts = await _repository.fetchPosts(catagory, pages);
+      _posts.sink.add(posts);
+    } catch (err) {
+      _posts.sink.addError(err);
+    }
   }
 
   dispose() {
